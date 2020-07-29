@@ -6,6 +6,7 @@ systemctl disable firewalld
 systemctl stop firewalld
 
 yum -y install epel-release
+yum -y install tmux tree vim nginx
 
 swapoff -a
 sed -i '/swap/d' /etc/fstab
