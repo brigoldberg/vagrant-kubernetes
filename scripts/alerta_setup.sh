@@ -1,3 +1,12 @@
+#!/usr/bin/env bash
+
+# create local storage path for mongodb
+mkdir -p /storage/mongodb
+chmod 1777 /storage/mongodb
+
+# setup nginx as a proxy forwarder for alerta
+rm -f /etc/nginx/nginx.conf
+cat <<EOF > /etc/nginx/nginx.conf
 user nginx;
 worker_processes auto;
 error_log /var/log/nginx/error.log;
@@ -24,3 +33,20 @@ http {
     # for more information.
     include /etc/nginx/conf.d/*.conf;
 }
+EOF
+
+cat <<EOF > /etc/nginx/conf.d/alerta-proxy.conf
+# Proxy Pass configuration for Alerta.
+server {
+    listen 80;
+
+    server_name alerta.loc;
+
+    location / {
+        proxy_pass  http://localhost:30080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+    }
+
+}
+EOF

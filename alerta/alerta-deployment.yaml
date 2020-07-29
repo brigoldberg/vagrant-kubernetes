@@ -18,6 +18,10 @@ spec:
         env:
           - name: DATABASE_URL
             value: 'mongodb://mongodb:27017/monitoring'
+          - name: ADMIN_USERS
+            value: 'brian@maystreet.com'
+          - name: ADMIN_PASSWORD
+            value: 'doberman'
 ---
 apiVersion: v1
 kind: Service
